@@ -1,141 +1,156 @@
-import csv
-import os
+# Employee Data Management System
 
+## 📌 Project Overview
 
-class EmployeeManager:
-    def __init__(self, filename="employees.csv"):
-        self.filename = filename
-        self.employees = {}
-        self.load_from_csv()
+The **Employee Data Management System** is a Python command-line application that allows users to manage employee records efficiently. The system uses **Object-Oriented Programming (OOP)** principles, stores data in memory using dictionaries, and ensures **data persistence** by reading from and writing to a CSV file.
 
-    def load_from_csv(self):
-        if not os.path.exists(self.filename):
-            return
+This project is designed to reinforce core Python concepts such as:
 
-        with open(self.filename, mode="r", newline="", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                self.employees[row["ID"]] = row
+* Dictionaries and lists
+* File handling using the `csv` module
+* Functions and conditional logic
+* Basic Command-Line Interface (CLI)
+* OOP (Encapsulation, Abstraction, Reusability)
 
-    def save_to_csv(self):
-        with open(self.filename, mode="w", newline="", encoding="utf-8") as file:
-            fieldnames = ["ID", "Name", "Position", "Salary", "Email"]
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
-            for emp in self.employees.values():
-                writer.writerow(emp)
+---
 
-    def add_employee(self):
-        emp_id = input("Enter ID: ")
+## ✨ Features
 
-        if emp_id in self.employees:
-            print("Employee ID already exists.")
-            return
+The system provides a menu-based interface with the following options:
 
-        name = input("Enter Name: ")
-        position = input("Enter Position: ")
+1. **Add Employee**
 
-        salary = input("Enter Salary: ")
-        if not salary.isdigit():
-            print("Salary must be a number.")
-            return
+   * Add a new employee with ID, Name, Position, Salary, and Email
+   * Data is stored in memory and saved to a CSV file
 
-        email = input("Enter Email: ")
+2. **View All Employees**
 
-        self.employees[emp_id] = {
-            "ID": emp_id,
-            "Name": name,
-            "Position": position,
-            "Salary": salary,
-            "Email": email
-        }
+   * Display all employees in a readable format
+   * Data is loaded from memory
 
-        self.save_to_csv()
-        print("Employee added successfully.")
+3. **Update Employee**
 
-    def view_employees(self):
-        if not self.employees:
-            print("No employees found.")
-            return
+   * Update employee details using their unique ID
+   * Empty fields are ignored and not updated
+   * Changes are saved back to the CSV file
 
-        for emp in self.employees.values():
-            print(emp)
+4. **Delete Employee**
 
-    def search_employee(self):
-        emp_id = input("Enter Employee ID: ")
-        if emp_id in self.employees:
-            print(self.employees[emp_id])
-        else:
-            print("Employee not found.")
+   * Delete an employee using their ID
+   * CSV file is updated accordingly
 
-    def update_employee(self):
-        emp_id = input("Enter Employee ID to update: ")
+5. **Search Employee**
 
-        if emp_id not in self.employees:
-            print("Employee not found.")
-            return
+   * Search and display employee details by ID
 
-        emp = self.employees[emp_id]
+6. **Exit**
 
-        name = input(f"New Name ({emp['Name']}): ")
-        position = input(f"New Position ({emp['Position']}): ")
-        salary = input(f"New Salary ({emp['Salary']}): ")
-        email = input(f"New Email ({emp['Email']}): ")
+   * Exit the program safely
 
-        if name:
-            emp["Name"] = name
-        if position:
-            emp["Position"] = position
-        if salary:
-            if salary.isdigit():
-                emp["Salary"] = salary
-            else:
-                print("Invalid salary.")
-                return
-        if email:
-            emp["Email"] = email
+---
 
-        self.save_to_csv()
-        print("Employee updated successfully.")
+## 🛠️ Technologies Used
 
-    def delete_employee(self):
-        emp_id = input("Enter Employee ID to delete: ")
+* **Python 3**
+* **csv module** for file handling
+* **Git & GitHub** for version control
 
-        if emp_id in self.employees:
-            del self.employees[emp_id]
-            self.save_to_csv()
-            print("Employee deleted successfully.")
-        else:
-            print("Employee not found.")
+---
 
-    def menu(self):
-        while True:
-            print("\n1. Add Employee")
-            print("2. View All Employees")
-            print("3. Update Employee")
-            print("4. Delete Employee")
-            print("5. Search Employee")
-            print("6. Exit")
+## 📂 Project Structure
 
-            choice = input("Choose an option: ")
+```
+Employee-Data-Management-System/
+│
+├── employee_manager.py   # Main Python program
+├── employees.csv         # CSV file storing employee data
+└── README.md             # Project documentation
+```
 
-            if choice == "1":
-                self.add_employee()
-            elif choice == "2":
-                self.view_employees()
-            elif choice == "3":
-                self.update_employee()
-            elif choice == "4":
-                self.delete_employee()
-            elif choice == "5":
-                self.search_employee()
-            elif choice == "6":
-                print("Goodbye!")
-                break
-            else:
-                print("Invalid choice.")
+---
 
+## ▶️ How to Run the Program
 
-if __name__ == "__main__":
-    manager = EmployeeManager()
-    manager.menu()
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/employee-data-management-system.git
+```
+
+2. Navigate to the project folder:
+
+```bash
+cd employee-data-management-system
+```
+
+3. Run the program:
+
+```bash
+python employee_manager.py
+```
+
+---
+
+## 📖 How It Works
+
+### Start the Program
+
+* The program loads employee data from `employees.csv` into memory.
+* A menu of options is displayed.
+
+### Perform an Action
+
+* The user selects an option (Add, Update, Delete, Search, List, Exit).
+* The program performs the requested operation.
+
+### Save Data
+
+* Any changes (add, update, delete) are saved to the CSV file.
+
+### Retrieve Data
+
+* When the program restarts, all employee data is reloaded from the CSV file.
+
+---
+
+## ✅ Validation & Error Handling
+
+* Salary must be numeric
+* Employee ID must be unique
+* Invalid menu options are handled gracefully
+* Displays appropriate messages for non-existing employee IDs
+
+---
+
+## 🧠 OOP Design
+
+* Uses a single class: **`EmployeeManager`**
+* Encapsulates employee data and related operations
+* Easily extendable (e.g., add new fields or features)
+
+---
+
+## 🌟 Bonus Features
+
+* Basic input validation (salary, empty fields)
+* User-friendly menu and messages
+
+---
+
+## 📤 Submission Instructions
+
+* Submit **only the GitHub repository link** via **Microsoft Teams**
+* Do **not** upload any files directly
+* Submissions outside the platform will not be accepted
+
+---
+
+## 👩‍💻 Author
+
+**Donia**
+
+---
+
+## 📜 License
+
+This project is for educational purposes only.
